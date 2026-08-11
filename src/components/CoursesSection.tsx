@@ -34,7 +34,7 @@ const courses = [
     color: "bg-emerald-deep",
     features: [],
     cta: "Толығырақ",
-    to: "/courses/tajweed",
+    to: "/courses/tajweed-basics",
   },
   {
     icon: BookMarked,
@@ -47,7 +47,7 @@ const courses = [
     color: "bg-gold",
     features: [],
     cta: "Толығырақ",
-    to: "/courses/khatym",
+    to: "/courses/quran-reading",
   },
 ];
 
