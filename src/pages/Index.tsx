@@ -4,11 +4,15 @@ import ProblemSection from "@/components/ProblemSection";
 import WhoIsThisForSection from "@/components/WhoIsThisForSection";
 import CoursesSection from "@/components/CoursesSection";
 import StructureSection from "@/components/StructureSection";
+import IntroLessonSection from "@/components/IntroLessonSection";
 import LearningFormatsSection from "@/components/LearningFormatsSection";
+import HowItWorksSection from "@/components/HowItWorksSection";
+import ZoomSection from "@/components/ZoomSection";
+import IncludedSection from "@/components/IncludedSection";
 import ResultsSection from "@/components/ResultsSection";
 import StatsBar from "@/components/StatsBar";
-import TeachersSection from "@/components/TeachersSection";
 import AboutSection from "@/components/AboutSection";
+import TeachersSection from "@/components/TeachersSection";
 import TestimonialsSection from "@/components/TestimonialsSection";
 import PricingSection from "@/components/PricingSection";
 import FAQSection from "@/components/FAQSection";
@@ -20,12 +24,16 @@ const Index = () => (
     <ProblemSection />
     <WhoIsThisForSection />
     <CoursesSection />
+    <AboutSection />
     <StructureSection />
+    <IntroLessonSection />
     <LearningFormatsSection />
+    <HowItWorksSection />
+    <ZoomSection />
+    <IncludedSection />
     <ResultsSection />
     <StatsBar />
     <TeachersSection />
-    <AboutSection />
     <TestimonialsSection />
     <PricingSection />
     <FAQSection />
