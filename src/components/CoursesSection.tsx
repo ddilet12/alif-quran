@@ -10,7 +10,7 @@ const courses = [
     description:
       "Араб әріптерін нөлден бастап үйреніп, Құран оқуға алғашқы қадам жасаңыз.",
     weeks: "12 сабақ",
-    price: "30 000 ₸",
+    price: "50 000 ₸",
     color: "bg-primary",
     features: [
       "12 сабақ",
@@ -30,7 +30,7 @@ const courses = [
     subtitle: "Дұрыс оқу",
     description: "Құранды дұрыс және ережеге сай оқуды үйреніңіз.",
     weeks: "8 апта",
-    price: "40 000 ₸",
+    price: "50 000 ₸",
     color: "bg-emerald-deep",
     features: [],
     cta: "Толығырақ",
@@ -43,7 +43,7 @@ const courses = [
     description:
       "Ұстаздың бақылауымен Құран оқып, оқу барысындағы қателерді түзету.",
     weeks: "Жеке кесте",
-    price: "40 000 ₸ / ай",
+    price: "50 000 ₸ / ай",
     color: "bg-gold",
     features: [],
     cta: "Толығырақ",

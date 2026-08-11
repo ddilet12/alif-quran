@@ -15,7 +15,7 @@ const plans: Plan[] = [
   {
     slug: "alippe",
     name: "Әліппе",
-    price: "30 000",
+    price: "50 000",
     unit: "₸",
     note: "Бір реттік төлем · Мәңгілік қолжетімді",
     features: [
@@ -29,7 +29,7 @@ const plans: Plan[] = [
   {
     slug: "tajweed",
     name: "Таджуид",
-    price: "40 000",
+    price: "50 000",
     unit: "₸",
     note: "Бір реттік төлем · Толық курс",
     popular: true,
@@ -44,7 +44,7 @@ const plans: Plan[] = [
   {
     slug: "khatym",
     name: "Хатым Құран",
-    price: "40 000",
+    price: "50 000",
     unit: "₸ / ай",
     note: "Айлық төлем · Жеке бағдарлама",
     features: [

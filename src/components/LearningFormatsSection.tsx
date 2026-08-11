@@ -5,7 +5,7 @@ const formats = [
   {
     icon: Monitor,
     title: "Онлайн оқу",
-    price: "30 000 ₸",
+    price: "50 000 ₸",
     items: [
       "Үйден оқу",
       "Видео сабақтар",
