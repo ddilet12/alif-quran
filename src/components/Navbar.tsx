@@ -5,14 +5,14 @@ import { PHONE_DISPLAY, TEL_HREF, WHATSAPP_URL } from "@/lib/contact";
 
 const sectionLinks = [
   { label: "Сабақтар", href: "/#courses" },
-  { label: "Оқу форматы", href: "/#formats" },
-  { label: "Ұстаз туралы", href: "/#about" },
+  { label: "Формат", href: "/#formats" },
+  { label: "Ұстаз", href: "/#about" },
   { label: "Баға", href: "/#pricing" },
   { label: "Сұрақтар", href: "/#faq" },
 ];
 
 const pageLinks = [
-  { label: "Оқу бағдарламасы", to: "/courses" },
+  { label: "Бағдарлама", to: "/courses" },
   { label: "Кіріспе сабақ", to: "/kirispe-sabaq" },
   { label: "Кабинет", to: "/dashboard" },
 ];
@@ -51,12 +51,12 @@ const Navbar = () => {
         <div className="hidden lg:flex items-center gap-5">
           {isHome &&
             sectionLinks.map((l) => (
-              <a key={l.href} href={l.href} className={`text-sm font-medium transition-colors ${linkBase}`}>
+              <a key={l.href} href={l.href} className={`text-sm font-medium whitespace-nowrap transition-colors ${linkBase}`}>
                 {l.label}
               </a>
             ))}
           {pageLinks.map((l) => (
-            <Link key={l.to} to={l.to} className={`text-sm font-medium transition-colors ${linkBase}`}>
+            <Link key={l.to} to={l.to} className={`text-sm font-medium whitespace-nowrap transition-colors ${linkBase}`}>
               {l.label}
             </Link>
           ))}
