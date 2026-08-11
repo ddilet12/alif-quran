@@ -4,6 +4,7 @@ import VideoPlayer from "@/components/VideoPlayer";
 import { Link } from "@/lib/router-compat";
 import { waLink } from "@/lib/contact";
 import { FileText, Download, ArrowLeft, MessageCircle } from "lucide-react";
+import { lesson1Materials } from "@/data/lesson1Materials";
 
 export const Route = createFileRoute("/kirispe-sabaq")({
   component: IntroLessonPage,
