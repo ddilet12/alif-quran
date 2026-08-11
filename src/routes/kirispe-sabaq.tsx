@@ -5,6 +5,8 @@ import { Link } from "@/lib/router-compat";
 import { waLink } from "@/lib/contact";
 import { FileText, Download, ArrowLeft, MessageCircle } from "lucide-react";
 import { lesson1Materials } from "@/data/lesson1Materials";
+import { lesson1Photos } from "@/data/lesson1Photos";
+import LessonPhotoGallery from "@/components/lesson/LessonPhotoGallery";
 
 export const Route = createFileRoute("/kirispe-sabaq")({
   component: IntroLessonPage,
@@ -52,6 +54,13 @@ function IntroLessonPage() {
           </p>
 
           <VideoPlayer title="Кіріспе сабақ" />
+
+          <div className="mt-10">
+            <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-4">
+              Сабақ суреттері
+            </h2>
+            <LessonPhotoGallery photos={lesson1Photos} />
+          </div>
 
           <div className="mt-10">
             <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-4">
