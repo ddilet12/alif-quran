@@ -1,6 +1,6 @@
 import { PlayCircle } from "lucide-react";
 
-type Props = { videoUrl?: string; title: string };
+type Props = { videoUrl?: string | undefined; title: string };
 
 const LessonPlayer = ({ videoUrl, title }: Props) => {
   if (videoUrl) {

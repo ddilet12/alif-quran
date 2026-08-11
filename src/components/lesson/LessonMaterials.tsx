@@ -1,8 +1,8 @@
 import { FileText, Download, Clock } from "lucide-react";
 
 type Props = {
-  pdfUrl?: string;
-  pdfTitle?: string;
+  pdfUrl?: string | undefined;
+  pdfTitle?: string | undefined;
 };
 
 const LessonMaterials = ({ pdfUrl, pdfTitle }: Props) => {

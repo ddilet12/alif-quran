@@ -2,8 +2,8 @@ import { Link } from "@/lib/router-compat";
 import { ArrowLeft, ArrowRight, CheckCircle2 } from "lucide-react";
 
 type Props = {
-  prevHref?: string;
-  nextHref?: string;
+  prevHref?: string | undefined;
+  nextHref?: string | undefined;
   onComplete: () => void;
   completed: boolean;
 };
