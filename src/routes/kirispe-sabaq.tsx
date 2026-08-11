@@ -4,6 +4,7 @@ import VideoPlayer from "@/components/VideoPlayer";
 import { Link } from "@/lib/router-compat";
 import { waLink } from "@/lib/contact";
 import { FileText, Download, ArrowLeft, MessageCircle } from "lucide-react";
+import { lesson1Materials } from "@/data/lesson1Materials";
 
 export const Route = createFileRoute("/kirispe-sabaq")({
   component: IntroLessonPage,
@@ -57,22 +58,41 @@ function IntroLessonPage() {
               Сабақ материалдары
             </h2>
             <div className="grid sm:grid-cols-2 gap-4">
-              <div className="flex items-center gap-3 bg-card border border-border rounded-xl p-4">
-                <FileText className="w-5 h-5 text-primary flex-shrink-0" />
-                <div className="min-w-0">
-                  <p className="text-sm font-semibold text-foreground">PDF оқулық</p>
-                  <p className="text-xs text-muted-foreground">Жақында қолжетімді</p>
+              {lesson1Materials.map((mat) => (
+                <div
+                  key={mat.url}
+                  className="bg-card border border-border rounded-xl p-4 hover:shadow-md transition-shadow"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-lg emerald-gradient flex items-center justify-center flex-shrink-0">
+                      <FileText className="w-5 h-5 text-primary-foreground" />
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-sm font-semibold text-foreground truncate">
+                        {mat.title}
+                      </p>
+                      <p className="text-xs text-muted-foreground">PDF</p>
+                    </div>
+                  </div>
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    <a
+                      href={mat.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center justify-center gap-2 emerald-gradient text-primary-foreground px-3 py-2 rounded-lg text-sm font-semibold hover:opacity-90 transition-opacity min-h-11 flex-1"
+                    >
+                      <FileText className="w-4 h-4" /> PDF-ті ашу
+                    </a>
+                    <a
+                      href={mat.url}
+                      download
+                      className="inline-flex items-center justify-center gap-2 bg-secondary text-foreground border border-border px-3 py-2 rounded-lg text-sm font-semibold hover:bg-muted transition-colors min-h-11 flex-1"
+                    >
+                      <Download className="w-4 h-4" /> Жүктеп алу
+                    </a>
+                  </div>
                 </div>
-              </div>
-              <div className="flex items-center gap-3 bg-card border border-border rounded-xl p-4">
-                <Download className="w-5 h-5 text-primary flex-shrink-0" />
-                <div className="min-w-0">
-                  <p className="text-sm font-semibold text-foreground">
-                    Электронды жұмыс дәптері
-                  </p>
-                  <p className="text-xs text-muted-foreground">Жақында қолжетімді</p>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
 
