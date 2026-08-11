@@ -40,7 +40,9 @@ function IntroLessonPage() {
             <ArrowLeft className="w-4 h-4" /> Басты бетке
           </Link>
 
-          <span className="text-xs font-medium text-gold uppercase tracking-wider">1-сабақ</span>
+          <span className="block text-xs font-medium text-gold uppercase tracking-wider">
+            1-сабақ
+          </span>
           <h1 className="text-3xl sm:text-4xl font-bold text-foreground mt-1 mb-3">
             Кіріспе сабақ
           </h1>
