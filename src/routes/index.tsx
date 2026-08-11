@@ -1,24 +1,22 @@
 import { createFileRoute } from "@tanstack/react-router";
+import Index from "@/pages/Index";
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
 export const Route = createFileRoute("/")({
   component: Index,
+  head: () => ({
+    meta: [
+      { title: "Alif to Quran — Құранды нөлден оқуды үйрену" },
+      {
+        name: "description",
+        content:
+          "Әліппеден Құранға дейін: тәжуид негіздері, тәжірибелі ұстаздар және онлайн курстар. Бүгін бастаңыз.",
+      },
+      { property: "og:title", content: "Alif to Quran — Құранды оқуды үйрену" },
+      {
+        property: "og:description",
+        content:
+          "Әліппеден Құранға дейінгі онлайн курс: тәжуид, дұрыс оқу, тәжірибелі ұстаздар.",
+      },
+    ],
+  }),
 });
-
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
-function Index() {
-  return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
-  );
-}
