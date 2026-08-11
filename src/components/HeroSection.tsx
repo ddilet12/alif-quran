@@ -1,5 +1,4 @@
 import heroBanner from "@/assets/hero-banner.jpg";
-import { Link } from "@/lib/router-compat";
 import { WHATSAPP_URL } from "@/lib/contact";
 
 const HeroSection = () => (
@@ -7,7 +6,7 @@ const HeroSection = () => (
     <div className="absolute inset-0">
       <img
         src={heroBanner}
-        alt="Құран оқу курсы"
+        alt="Араб әліппесі және Құран оқу курсы"
         width={1920}
         height={800}
         className="w-full h-full object-cover"
@@ -16,20 +15,22 @@ const HeroSection = () => (
     </div>
     <div className="relative z-10 text-center px-4 max-w-4xl mx-auto pt-24 pb-12 sm:pt-20 sm:pb-16">
       <div className="inline-block mb-5 px-3 sm:px-4 py-1.5 rounded-full border border-gold/40 bg-primary/20 backdrop-blur-sm">
-        <span className="text-gold text-xs sm:text-sm font-medium">🎓 200+ оқушы сенім артты</span>
+        <span className="text-gold text-xs sm:text-sm font-medium">
+          🎓 Онлайн және офлайн оқу
+        </span>
       </div>
       <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold text-primary-foreground mb-5 sm:mb-6 leading-tight">
-        Құран оқуды үйренгіңіз келеді,{" "}
+        Араб әліппесін және Құран оқуын{" "}
         <span className="block sm:inline">
-          бірақ <span className="text-gold">неден бастау</span> керектігін білмейсіз бе?
+          <span className="text-gold">нөлден бастап</span> ұстазбен бірге үйреніңіз
         </span>
       </h1>
       <p className="text-base sm:text-xl text-primary-foreground/85 mb-3 sm:mb-4 max-w-2xl mx-auto leading-relaxed">
-        4 аптада араб әріптерін танып, дұрыс дыбыстап, Құран оқуға алғашқы қадамыңызды жасаңыз —
-        тіпті нөлден бастасаңыз да.
+        Әліппе, Тәжуид және Құран хатымы — қадам-қадаммен, ұстаздың тексеруімен және Zoom
+        сабақтарымен.
       </p>
       <p className="text-xs sm:text-sm text-primary-foreground/60 mb-8 sm:mb-10">
-        Видеосабақтар + PDF тапсырмалар + жеке тексеру
+        Видео сабақтар + электронды материалдар + ұстаздың кері байланысы
       </p>
       <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
         <a
@@ -38,14 +39,14 @@ const HeroSection = () => (
           rel="noopener noreferrer"
           className="gold-gradient text-accent-foreground px-6 sm:px-8 py-3.5 sm:py-4 rounded-lg text-base sm:text-lg font-semibold hover:opacity-90 transition-opacity shadow-lg"
         >
-          📲 Тегін кеңес алу
+          Сабаққа жазылу
         </a>
-        <Link
-          to="/courses"
+        <a
+          href="#structure"
           className="border-2 border-primary-foreground/40 text-primary-foreground px-6 sm:px-8 py-3.5 sm:py-4 rounded-lg text-base sm:text-lg font-medium hover:bg-primary-foreground/10 transition-colors backdrop-blur-sm"
         >
-          Курстарды көру →
-        </Link>
+          Бағдарламамен танысу
+        </a>
       </div>
     </div>
     <div className="absolute bottom-6 left-1/2 -translate-x-1/2 animate-bounce hidden sm:block">

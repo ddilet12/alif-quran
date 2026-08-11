@@ -11,6 +11,8 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DashboardRouteImport } from './routes/dashboard'
+import { Route as KirispeSabaqRouteImport } from './routes/kirispe-sabaq'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as TeachersRouteImport } from './routes/teachers'
 import { Route as CertificateSlugRouteImport } from './routes/certificate/$slug'
 import { Route as CoursesIndexRouteImport } from './routes/courses/index'
@@ -25,6 +27,16 @@ const IndexRoute = IndexRouteImport.update({
 const DashboardRoute = DashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const KirispeSabaqRoute = KirispeSabaqRouteImport.update({
+  id: '/kirispe-sabaq',
+  path: '/kirispe-sabaq',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TeachersRoute = TeachersRouteImport.update({
@@ -57,6 +69,8 @@ const LessonCourseSlugLessonIdRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRoute
+  '/kirispe-sabaq': typeof KirispeSabaqRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/teachers': typeof TeachersRoute
   '/certificate/$slug': typeof CertificateSlugRoute
   '/courses/$slug': typeof CoursesSlugRoute
@@ -66,6 +80,8 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRoute
+  '/kirispe-sabaq': typeof KirispeSabaqRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/teachers': typeof TeachersRoute
   '/certificate/$slug': typeof CertificateSlugRoute
   '/courses/$slug': typeof CoursesSlugRoute
@@ -76,6 +92,8 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRoute
+  '/kirispe-sabaq': typeof KirispeSabaqRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/teachers': typeof TeachersRoute
   '/certificate/$slug': typeof CertificateSlugRoute
   '/courses/$slug': typeof CoursesSlugRoute
@@ -87,6 +105,8 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/dashboard'
+    | '/kirispe-sabaq'
+    | '/sitemap.xml'
     | '/teachers'
     | '/certificate/$slug'
     | '/courses/$slug'
@@ -96,6 +116,8 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/dashboard'
+    | '/kirispe-sabaq'
+    | '/sitemap.xml'
     | '/teachers'
     | '/certificate/$slug'
     | '/courses/$slug'
@@ -105,6 +127,8 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/dashboard'
+    | '/kirispe-sabaq'
+    | '/sitemap.xml'
     | '/teachers'
     | '/certificate/$slug'
     | '/courses/$slug'
@@ -115,6 +139,8 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   DashboardRoute: typeof DashboardRoute
+  KirispeSabaqRoute: typeof KirispeSabaqRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TeachersRoute: typeof TeachersRoute
   CertificateSlugRoute: typeof CertificateSlugRoute
   CoursesSlugRoute: typeof CoursesSlugRoute
@@ -136,6 +162,20 @@ declare module '@tanstack/react-router' {
       path: '/dashboard'
       fullPath: '/dashboard'
       preLoaderRoute: typeof DashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/kirispe-sabaq': {
+      id: '/kirispe-sabaq'
+      path: '/kirispe-sabaq'
+      fullPath: '/kirispe-sabaq'
+      preLoaderRoute: typeof KirispeSabaqRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/teachers': {
@@ -179,6 +219,8 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   DashboardRoute: DashboardRoute,
+  KirispeSabaqRoute: KirispeSabaqRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   TeachersRoute: TeachersRoute,
   CertificateSlugRoute: CertificateSlugRoute,
   CoursesSlugRoute: CoursesSlugRoute,

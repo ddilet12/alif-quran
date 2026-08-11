@@ -15,19 +15,21 @@ const Footer = () => (
       </div>
 
       <div>
-        <h4 className="font-semibold text-foreground mb-3 text-sm">Платформа</h4>
+        <h4 className="font-semibold text-foreground mb-3 text-sm">Бағдарламалар</h4>
         <ul className="space-y-2 text-sm">
-          <li><Link to="/courses" className="text-muted-foreground hover:text-primary">Курстар</Link></li>
-          <li><Link to="/teachers" className="text-muted-foreground hover:text-primary">Ұстаздар</Link></li>
-          <li><Link to="/dashboard" className="text-muted-foreground hover:text-primary">Кабинет</Link></li>
+          <li><Link to="/courses/alippe" className="text-muted-foreground hover:text-primary">Әліппе</Link></li>
+          <li><Link to="/courses/tajweed-basics" className="text-muted-foreground hover:text-primary">Тәжуид</Link></li>
+          <li><Link to="/courses/quran-reading" className="text-muted-foreground hover:text-primary">Құран хатымы</Link></li>
+          <li><Link to="/courses" className="text-muted-foreground hover:text-primary">Барлық сабақтар</Link></li>
         </ul>
       </div>
 
       <div>
         <h4 className="font-semibold text-foreground mb-3 text-sm">Бөлімдер</h4>
         <ul className="space-y-2 text-sm">
-          <li><a href="/#formats" className="text-muted-foreground hover:text-primary">Оқу форматтары</a></li>
-          <li><a href="/#pricing" className="text-muted-foreground hover:text-primary">Баға</a></li>
+          <li><Link to="/" className="text-muted-foreground hover:text-primary">Басты бет</Link></li>
+          <li><a href="/#about" className="text-muted-foreground hover:text-primary">Ұстаз туралы</a></li>
+          <li><a href="/#formats" className="text-muted-foreground hover:text-primary">Оқу форматы</a></li>
           <li><a href="/#faq" className="text-muted-foreground hover:text-primary">Сұрақтар</a></li>
         </ul>
       </div>

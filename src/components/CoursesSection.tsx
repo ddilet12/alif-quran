@@ -1,34 +1,53 @@
-import { BookOpen, Mic, BookMarked } from "lucide-react";
+import { BookOpen, Mic, BookMarked, Check } from "lucide-react";
 import { Link } from "@/lib/router-compat";
-import { WHATSAPP_URL } from "@/lib/contact";
+import { waLink } from "@/lib/contact";
 
 const courses = [
   {
     icon: BookOpen,
-    title: "Әліппе",
+    title: "Әліппе онлайн",
     subtitle: "0-ден бастау",
-    description: "Араб әріптерін танып, дұрыс дыбыстап, қарапайым буындарды оқуды үйренесіз.",
-    weeks: "4 апта",
+    description:
+      "Араб әріптерін нөлден бастап үйреніп, Құран оқуға алғашқы қадам жасаңыз.",
+    weeks: "12 сабақ",
     price: "30 000 ₸",
     color: "bg-primary",
+    features: [
+      "12 сабақ",
+      "Видео сабақтар",
+      "Электронды материалдар",
+      "Тапсырмалар",
+      "Ұстаздың кері байланысы",
+      "Zoom арқылы сабақтар",
+    ],
+    cta: "Курс туралы толығырақ",
+    to: "/courses/alippe",
+    featured: true,
   },
   {
     icon: Mic,
-    title: "Таджуид",
+    title: "Тәжуид",
     subtitle: "Дұрыс оқу",
-    description: "Құранды дұрыс, ережемен оқуды үйретемін. Тәжуид ережелерін толық меңгересіз.",
+    description: "Құранды дұрыс және ережеге сай оқуды үйреніңіз.",
     weeks: "8 апта",
     price: "40 000 ₸",
     color: "bg-emerald-deep",
+    features: [],
+    cta: "Толығырақ",
+    to: "/courses/tajweed-basics",
   },
   {
     icon: BookMarked,
-    title: "Хатым Құран",
-    subtitle: "Толық Құран оқу",
-    description: "Құранды басынан аяғына дейін толық оқып шығу. Жеке бағдарлама.",
-    weeks: "Жеке",
+    title: "Құран хатымы",
+    subtitle: "Ұстаз бақылауымен",
+    description:
+      "Ұстаздың бақылауымен Құран оқып, оқу барысындағы қателерді түзету.",
+    weeks: "Жеке кесте",
     price: "40 000 ₸ / ай",
     color: "bg-gold",
+    features: [],
+    cta: "Толығырақ",
+    to: "/courses/quran-reading",
   },
 ];
 
@@ -36,46 +55,70 @@ const CoursesSection = () => {
   return (
     <section id="courses" className="py-20 px-4 bg-secondary">
       <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">Курстар</h2>
-          <p className="text-muted-foreground text-base sm:text-lg max-w-xl mx-auto mb-6">
-            Сіздің деңгейіңізге сай курс таңдаңыз
+        <div className="text-center mb-12 sm:mb-16">
+          <span className="text-gold text-sm font-medium uppercase tracking-wider">
+            Оқу бағдарламасы
+          </span>
+          <h2 className="text-3xl md:text-4xl font-bold text-foreground mt-2 mb-4">Сабақтар</h2>
+          <p className="text-muted-foreground text-base sm:text-lg max-w-xl mx-auto">
+            Деңгейіңізге сай бағытты таңдаңыз
           </p>
-          <Link
-            to="/courses"
-            className="inline-flex items-center gap-2 text-primary font-semibold hover:underline text-sm"
-          >
-            Толық каталогты ашу →
-          </Link>
         </div>
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-3 gap-8 items-start">
           {courses.map((course) => (
             <div
               key={course.title}
-              className="bg-card rounded-2xl p-8 shadow-md hover:shadow-xl transition-shadow border border-border group"
+              className={`bg-card rounded-2xl p-8 shadow-md hover:shadow-xl transition-shadow group ${
+                course.featured ? "border-2 border-primary" : "border border-border"
+              }`}
             >
-              <div className={`w-14 h-14 ${course.color} rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}>
+              <div
+                className={`w-14 h-14 ${course.color} rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}
+              >
                 <course.icon className="w-7 h-7 text-primary-foreground" />
               </div>
-              <span className="text-xs font-medium text-gold uppercase tracking-wider">{course.subtitle}</span>
+              <span className="text-xs font-medium text-gold uppercase tracking-wider">
+                {course.subtitle}
+              </span>
               <h3 className="text-2xl font-bold text-foreground mt-1 mb-2">{course.title}</h3>
               <div className="flex items-baseline gap-2 mb-3">
                 <span className="text-2xl font-bold text-primary">{course.price}</span>
               </div>
-              <p className="text-muted-foreground mb-6 leading-relaxed text-sm sm:text-base">{course.description}</p>
-              <div className="flex items-center justify-between border-t border-border pt-4">
+              <p className="text-muted-foreground mb-5 leading-relaxed text-sm sm:text-base">
+                {course.description}
+              </p>
+              {course.features.length > 0 && (
+                <ul className="space-y-2 mb-6">
+                  {course.features.map((f) => (
+                    <li key={f} className="flex items-start gap-2 text-sm text-foreground/80">
+                      <Check className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
+                      <span>{f}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+              <div className="flex items-center justify-between gap-3 border-t border-border pt-4 flex-wrap">
                 <span className="text-sm text-muted-foreground">⏱ {course.weeks}</span>
-                <a
-                  href={WHATSAPP_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <Link
+                  to={course.to}
                   className="text-sm font-semibold text-primary hover:underline"
                 >
-                  Жазылу →
-                </a>
+                  {course.cta} →
+                </Link>
               </div>
             </div>
           ))}
+        </div>
+
+        <div className="text-center mt-10">
+          <a
+            href={waLink("Сәлеметсіз бе! Сабаққа жазылғым келеді.")}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex gold-gradient text-accent-foreground px-8 py-4 rounded-lg text-base sm:text-lg font-semibold hover:opacity-90 transition-opacity shadow-lg"
+          >
+            Сабаққа жазылу
+          </a>
         </div>
       </div>
     </section>
