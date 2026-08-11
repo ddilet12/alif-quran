@@ -4,16 +4,16 @@ import { Menu, X, Phone } from "lucide-react";
 import { PHONE_DISPLAY, TEL_HREF, WHATSAPP_URL } from "@/lib/contact";
 
 const sectionLinks = [
-  { label: "Курстар", href: "/#courses" },
-  { label: "Форматтар", href: "/#formats" },
-  { label: "Ұстаздар", href: "/#teachers" },
+  { label: "Сабақтар", href: "/#courses" },
+  { label: "Оқу форматы", href: "/#formats" },
+  { label: "Ұстаз туралы", href: "/#about" },
   { label: "Баға", href: "/#pricing" },
   { label: "Сұрақтар", href: "/#faq" },
 ];
 
 const pageLinks = [
-  { label: "Курстар каталогы", to: "/courses" },
-  { label: "Ұстаздар", to: "/teachers" },
+  { label: "Оқу бағдарламасы", to: "/courses" },
+  { label: "Кіріспе сабақ", to: "/kirispe-sabaq" },
   { label: "Кабинет", to: "/dashboard" },
 ];
 
