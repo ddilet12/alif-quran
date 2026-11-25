@@ -2,14 +2,17 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "@/lib/router-compat";
 import SiteLayout from "@/components/SiteLayout";
 import LessonProgress from "@/components/lesson/LessonProgress";
-import { getCourseBySlug, LEVEL_LABEL, totalLessons } from "@/data/courses";
+import { formatPrice, getCourseBySlug, LEVEL_LABEL, totalLessons } from "@/data/courses";
+import PurchaseCard from "@/components/PurchaseCard";
+import { formatDate, hasCourseAccess, useViewer } from "@/lib/useViewer";
 import { getCourseProgress, getCompletedLessons } from "@/lib/progress";
-import { ArrowLeft, CheckCircle2, Circle, Clock, PlayCircle, Award } from "lucide-react";
+import { ArrowLeft, CheckCircle2, Circle, Clock, PlayCircle, Award, Lock, Tag } from "lucide-react";
 
 const CourseDetail = () => {
   const { slug = "" } = useParams();
   const course = getCourseBySlug(slug);
   const [completed, setCompleted] = useState<string[]>([]);
+  const { viewer, access } = useViewer();
 
   useEffect(() => {
     const update = () => setCompleted(getCompletedLessons(slug));
@@ -34,6 +37,8 @@ const CourseDetail = () => {
   const total = totalLessons(course);
   const progress = getCourseProgress(course.slug, total);
   const isComplete = progress === 100;
+  const unlocked = hasCourseAccess(viewer, access, course.slug);
+  const expiresAt = access[course.slug] ?? null;
 
   return (
     <SiteLayout>
@@ -67,23 +72,42 @@ const CourseDetail = () => {
             <span className="inline-flex items-center gap-1">
               <PlayCircle className="w-4 h-4" /> {total} сабақ
             </span>
+            <span className="inline-flex items-center gap-1">
+              <Tag className="w-4 h-4" /> {formatPrice(course)}
+            </span>
           </div>
         </div>
       </section>
 
       <section className="py-10 sm:py-14 px-4">
         <div className="max-w-4xl mx-auto">
-          <div className="bg-card border border-border rounded-2xl p-5 sm:p-6 mb-8">
-            <LessonProgress value={progress} label="Курс прогресі" />
-            {isComplete && (
-              <Link
-                to={`/certificate/${course.slug}`}
-                className="mt-4 inline-flex items-center gap-2 gold-gradient text-accent-foreground px-4 py-2 rounded-lg text-sm font-semibold"
-              >
-                <Award className="w-4 h-4" /> Сертификатты алу
-              </Link>
-            )}
-          </div>
+          {!unlocked && (
+            <div className="mb-8">
+              <PurchaseCard
+                course={course}
+                email={viewer?.email}
+                returnTo={`/courses/${course.slug}`}
+                heading="Курсқа қолжетімділік"
+              />
+            </div>
+          )}
+
+          {unlocked && (
+            <div className="bg-card border border-border rounded-2xl p-5 sm:p-6 mb-8">
+              <p className="text-sm text-primary font-semibold mb-3">
+                Курс ашық{expiresAt ? ` — ${formatDate(expiresAt)} дейін` : ""}
+              </p>
+              <LessonProgress value={progress} label="Курс прогресі" />
+              {isComplete && (
+                <Link
+                  to={`/certificate/${course.slug}`}
+                  className="mt-4 inline-flex items-center gap-2 gold-gradient text-accent-foreground px-4 py-2 rounded-lg text-sm font-semibold"
+                >
+                  <Award className="w-4 h-4" /> Сертификатты алу
+                </Link>
+              )}
+            </div>
+          )}
 
           <div className="space-y-6">
             {course.modules.map((m, mi) => (
@@ -103,7 +127,9 @@ const CourseDetail = () => {
                           to={`/lesson/${course.slug}/${l.id}`}
                           className="flex items-center gap-3 sm:gap-4 px-5 sm:px-6 py-4 hover:bg-secondary/50 transition-colors"
                         >
-                          {done ? (
+                          {!unlocked ? (
+                            <Lock className="w-5 h-5 text-muted-foreground flex-shrink-0" />
+                          ) : done ? (
                             <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0" />
                           ) : (
                             <Circle className="w-5 h-5 text-muted-foreground flex-shrink-0" />

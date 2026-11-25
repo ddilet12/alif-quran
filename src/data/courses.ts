@@ -1,5 +1,6 @@
-// Mock course data — content slots (videoUrl, audioUrl, text, examples, quiz)
-// are placeholders. Fill them in later or migrate to Lovable Cloud.
+// Public course catalog: titles, durations, prices. Shipped to every visitor.
+// Paid lesson content (video, text, quiz, PDFs) does NOT go here — it lives in
+// src/server/lessonContent.ts and is only sent to students who have access.
 
 export type Level = "beginner" | "intermediate" | "advanced";
 
@@ -15,12 +16,6 @@ export type Lesson = {
   id: string;
   title: string;
   duration: string; // e.g. "12 мин"
-  videoUrl?: string; // YouTube/Vimeo embed URL — fill later
-  audioUrl?: string; // Audio pronunciation file URL — fill later
-  textContent?: string; // Lesson body (markdown/plain)
-  examples?: { arabic: string; transliteration: string; translation?: string }[];
-  quiz?: QuizQuestion[];
-  pdfUrl?: string; // Downloadable lesson PDF (учебник/пропись)
   pdfTitle?: string;
 };
 
@@ -39,6 +34,12 @@ export type Course = {
   duration: string;
   icon: string; // emoji for now
   color: "primary" | "emerald-deep" | "gold";
+  /** Price in tenge. */
+  price: number;
+  /** Days of access per payment; undefined = no expiry. */
+  accessDays?: number;
+  /** Not sold yet: hidden from the catalog and its pages return "not found". */
+  hidden?: boolean;
   modules: Module[];
 };
 
@@ -48,7 +49,7 @@ export const LEVEL_LABEL: Record<Level, string> = {
   advanced: "Жоғары",
 };
 
-export const courses: Course[] = [
+const allCourses: Course[] = [
   {
     slug: "alippe",
     title: "Әліппе",
@@ -59,19 +60,55 @@ export const courses: Course[] = [
     duration: "8 сабақ",
     icon: "📖",
     color: "primary",
+    price: 50000,
     modules: [
       {
         id: "m1",
         title: "Әліппе — 8 сабақ",
         lessons: [
-          { id: "l1", title: "1-сабақ. Араб әліпбиі: 1-бөлім", duration: "15 мин", pdfTitle: "1-сабақ. Араб әліпбиі: 1-бөлім" },
-          { id: "l2", title: "2-сабақ. Араб әліпбиі: 2-бөлім", duration: "15 мин", pdfTitle: "2-сабақ. Араб әліпбиі: 2-бөлім" },
-          { id: "l3", title: "3-сабақ. Қысқа дауыстылар (Харакаттар)", duration: "15 мин", pdfTitle: "3-сабақ. Харакаттар" },
-          { id: "l4", title: "4-сабақ. Ұзын дауыстылар (Мадд)", duration: "15 мин", pdfTitle: "4-сабақ. Мадд" },
-          { id: "l5", title: "5-сабақ. Сукун және Ташдид", duration: "15 мин", pdfTitle: "5-сабақ. Сукун және Ташдид" },
+          {
+            id: "l1",
+            title: "1-сабақ. Араб әліпбиі: 1-бөлім",
+            duration: "15 мин",
+            pdfTitle: "1-сабақ. Араб әліпбиі: 1-бөлім",
+          },
+          {
+            id: "l2",
+            title: "2-сабақ. Араб әліпбиі: 2-бөлім",
+            duration: "15 мин",
+            pdfTitle: "2-сабақ. Араб әліпбиі: 2-бөлім",
+          },
+          {
+            id: "l3",
+            title: "3-сабақ. Қысқа дауыстылар (Харакаттар)",
+            duration: "15 мин",
+            pdfTitle: "3-сабақ. Харакаттар",
+          },
+          {
+            id: "l4",
+            title: "4-сабақ. Ұзын дауыстылар (Мадд)",
+            duration: "15 мин",
+            pdfTitle: "4-сабақ. Мадд",
+          },
+          {
+            id: "l5",
+            title: "5-сабақ. Сукун және Ташдид",
+            duration: "15 мин",
+            pdfTitle: "5-сабақ. Сукун және Ташдид",
+          },
           { id: "l6", title: "6-сабақ. Танвин", duration: "15 мин", pdfTitle: "6-сабақ. Танвин" },
-          { id: "l7", title: "7-сабақ. Буындарды оқу", duration: "20 мин", pdfTitle: "7-сабақ. Буындарды оқу" },
-          { id: "l8", title: "8-сабақ. Сөздер мен қысқа аяттар", duration: "20 мин", pdfTitle: "8-сабақ. Сөздер мен қысқа аяттар" },
+          {
+            id: "l7",
+            title: "7-сабақ. Буындарды оқу",
+            duration: "20 мин",
+            pdfTitle: "7-сабақ. Буындарды оқу",
+          },
+          {
+            id: "l8",
+            title: "8-сабақ. Сөздер мен қысқа аяттар",
+            duration: "20 мин",
+            pdfTitle: "8-сабақ. Сөздер мен қысқа аяттар",
+          },
         ],
       },
     ],
@@ -86,6 +123,7 @@ export const courses: Course[] = [
     duration: "8 апта",
     icon: "🎙️",
     color: "emerald-deep",
+    price: 50000,
     modules: [
       {
         id: "m1",
@@ -117,6 +155,8 @@ export const courses: Course[] = [
     duration: "12 апта",
     icon: "📚",
     color: "primary",
+    price: 50000,
+    hidden: true,
     modules: [
       {
         id: "m1",
@@ -132,14 +172,16 @@ export const courses: Course[] = [
   },
   {
     slug: "quran-reading",
-    title: "Құран оқу",
-    subtitle: "Tajweed-пен толық оқу",
+    title: "Құран хатымы",
+    subtitle: "Ұстаз бақылауымен толық оқу",
     description:
       "Құранды басынан аяғына дейін Tajweed ережелерімен оқу практикасы. Жеке кері байланыс.",
     level: "advanced",
     duration: "Жеке",
     icon: "🕌",
     color: "gold",
+    price: 50000,
+    accessDays: 30,
     modules: [
       {
         id: "m1",
@@ -158,6 +200,8 @@ export const courses: Course[] = [
     duration: "Үздіксіз",
     icon: "✨",
     color: "emerald-deep",
+    price: 50000,
+    hidden: true,
     modules: [
       {
         id: "m1",
@@ -168,7 +212,12 @@ export const courses: Course[] = [
   },
 ];
 
+export const courses: Course[] = allCourses.filter((c) => !c.hidden);
+
 export const getCourseBySlug = (slug: string) => courses.find((c) => c.slug === slug);
+
+export const formatPrice = (course: Course) =>
+  `${String(course.price).replace(/\B(?=(\d{3})+(?!\d))/g, " ")} ₸${course.accessDays ? " / ай" : ""}`;
 
 export const getLesson = (courseSlug: string, lessonId: string) => {
   const course = getCourseBySlug(courseSlug);

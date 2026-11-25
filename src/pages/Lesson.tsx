@@ -1,5 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
+import { useLoaderData } from "@tanstack/react-router";
 import { Link, useParams } from "@/lib/router-compat";
+import PurchaseCard from "@/components/PurchaseCard";
+import type { LessonResult } from "@/lib/access";
+import { formatDate } from "@/lib/useViewer";
 import SiteLayout from "@/components/SiteLayout";
 import LessonPlayer from "@/components/lesson/LessonPlayer";
 import AudioExample from "@/components/lesson/AudioExample";
@@ -8,16 +12,13 @@ import LessonNavigation from "@/components/lesson/LessonNavigation";
 import LessonProgress from "@/components/lesson/LessonProgress";
 import LessonMaterials from "@/components/lesson/LessonMaterials";
 import { getAllLessonsFlat, getCourseBySlug, getLesson } from "@/data/courses";
-import {
-  getCourseProgress,
-  isLessonCompleted,
-  markLessonCompleted,
-} from "@/lib/progress";
+import { getCourseProgress, isLessonCompleted, markLessonCompleted } from "@/lib/progress";
 import { ArrowLeft, MessageCircle } from "lucide-react";
 import { waLink } from "@/lib/contact";
 
 const Lesson = () => {
   const { courseSlug = "", lessonId = "" } = useParams();
+  const result = useLoaderData({ from: "/lesson/$courseSlug/$lessonId" }) as LessonResult;
   const data = getLesson(courseSlug, lessonId);
   const course = getCourseBySlug(courseSlug);
 
@@ -39,7 +40,7 @@ const Lesson = () => {
     return () => window.removeEventListener("progress-updated", update);
   }, [courseSlug, lessonId, course, flat.length]);
 
-  if (!data || !course) {
+  if (!data || !course || result.status === "notfound") {
     return (
       <SiteLayout>
         <div className="max-w-3xl mx-auto py-20 px-4 text-center">
@@ -53,8 +54,6 @@ const Lesson = () => {
   }
 
   const { lesson } = data;
-  const examples = lesson.examples || [];
-  const quiz = lesson.quiz || [];
 
   const handleComplete = () => markLessonCompleted(courseSlug, lessonId);
 
@@ -78,64 +77,111 @@ const Lesson = () => {
 
       <section className="py-8 sm:py-12 px-4">
         <div className="max-w-4xl mx-auto space-y-8">
-          <LessonMaterials pdfUrl={lesson.pdfUrl} pdfTitle={lesson.pdfTitle} />
-
-          <LessonPlayer videoUrl={lesson.videoUrl} title={lesson.title} />
-
-          <div className="prose prose-sm sm:prose-base max-w-none">
-            {lesson.textContent ? (
-              <p className="text-foreground leading-relaxed whitespace-pre-line">
-                {lesson.textContent}
-              </p>
-            ) : (
-              <div className="bg-muted/40 border border-dashed border-border rounded-xl p-5 text-sm text-muted-foreground text-center">
-                Сабақтың мәтіндік материалы жақын арада қосылады.
-              </div>
-            )}
-          </div>
-
-          {examples.length > 0 && (
-            <div>
-              <h2 className="text-xl font-bold text-foreground mb-4">Мысалдар</h2>
-              <div className="space-y-3">
-                {examples.map((ex, i) => (
-                  <AudioExample key={i} {...ex} />
-                ))}
-              </div>
-            </div>
+          {result.status === "ok" ? (
+            <LessonBody
+              result={result}
+              lessonTitle={lesson.title}
+              prevHref={prev ? `/lesson/${courseSlug}/${prev.id}` : undefined}
+              nextHref={next ? `/lesson/${courseSlug}/${next.id}` : undefined}
+              onComplete={handleComplete}
+              completed={completed}
+            />
+          ) : (
+            <PurchaseCard
+              course={course}
+              email={result.status === "locked" ? result.email : null}
+              returnTo={`/lesson/${courseSlug}/${lessonId}`}
+            />
           )}
-
-          <div>
-            <h2 className="text-xl font-bold text-foreground mb-4">Өзін-өзі тексеру</h2>
-            <Quiz questions={quiz} />
-          </div>
-
-          <div className="bg-card border border-border rounded-xl p-5 sm:p-6 flex flex-col sm:flex-row sm:items-center gap-4">
-            <div className="flex-1">
-              <h3 className="font-semibold text-foreground mb-1">Сұрағыңыз бар ма?</h3>
-              <p className="text-sm text-muted-foreground">
-                Тьюторға тікелей жазыңыз — жауап аласыз.
-              </p>
-            </div>
-            <a
-              href={waLink(`Сабақ: ${lesson.title}. Сұрағым бар:`)}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 emerald-gradient text-primary-foreground px-4 py-2.5 rounded-lg text-sm font-semibold"
-            >
-              <MessageCircle className="w-4 h-4" /> Тьюторға жазу
-            </a>
-          </div>
-
-          <LessonNavigation
-            prevHref={prev ? `/lesson/${courseSlug}/${prev.id}` : undefined}
-            nextHref={next ? `/lesson/${courseSlug}/${next.id}` : undefined}
-            onComplete={handleComplete}
-            completed={completed}
-          />
         </div>
       </section>
     </SiteLayout>
+  );
+};
+
+type BodyProps = {
+  result: Extract<LessonResult, { status: "ok" }>;
+  lessonTitle: string;
+  prevHref?: string | undefined;
+  nextHref?: string | undefined;
+  onComplete: () => void;
+  completed: boolean;
+};
+
+const LessonBody = ({
+  result,
+  lessonTitle,
+  prevHref,
+  nextHref,
+  onComplete,
+  completed,
+}: BodyProps) => {
+  const { content, expiresAt } = result;
+  const examples = content.examples || [];
+  const quiz = content.quiz || [];
+
+  return (
+    <>
+      {expiresAt && (
+        <p className="text-sm text-muted-foreground">
+          Курсқа қолжетімділік {formatDate(expiresAt)} дейін.
+        </p>
+      )}
+
+      <LessonMaterials pdfs={content.pdfs} />
+
+      <LessonPlayer videoUrl={content.videoUrl} title={lessonTitle} />
+
+      <div className="prose prose-sm sm:prose-base max-w-none">
+        {content.textContent ? (
+          <p className="text-foreground leading-relaxed whitespace-pre-line">
+            {content.textContent}
+          </p>
+        ) : (
+          <div className="bg-muted/40 border border-dashed border-border rounded-xl p-5 text-sm text-muted-foreground text-center">
+            Сабақтың мәтіндік материалы жақын арада қосылады.
+          </div>
+        )}
+      </div>
+
+      {examples.length > 0 && (
+        <div>
+          <h2 className="text-xl font-bold text-foreground mb-4">Мысалдар</h2>
+          <div className="space-y-3">
+            {examples.map((ex, i) => (
+              <AudioExample key={i} {...ex} />
+            ))}
+          </div>
+        </div>
+      )}
+
+      <div>
+        <h2 className="text-xl font-bold text-foreground mb-4">Өзін-өзі тексеру</h2>
+        <Quiz questions={quiz} />
+      </div>
+
+      <div className="bg-card border border-border rounded-xl p-5 sm:p-6 flex flex-col sm:flex-row sm:items-center gap-4">
+        <div className="flex-1">
+          <h3 className="font-semibold text-foreground mb-1">Сұрағыңыз бар ма?</h3>
+          <p className="text-sm text-muted-foreground">Тьюторға тікелей жазыңыз — жауап аласыз.</p>
+        </div>
+        <a
+          href={waLink(`Сабақ: ${lessonTitle}. Сұрағым бар:`)}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center justify-center gap-2 emerald-gradient text-primary-foreground px-4 py-2.5 rounded-lg text-sm font-semibold"
+        >
+          <MessageCircle className="w-4 h-4" /> Тьюторға жазу
+        </a>
+      </div>
+
+      <LessonNavigation
+        prevHref={prevHref}
+        nextHref={nextHref}
+        onComplete={onComplete}
+        completed={completed}
+      />
+    </>
   );
 };
 

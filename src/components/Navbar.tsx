@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useLocation } from "@/lib/router-compat";
 import { Menu, X, Phone } from "lucide-react";
 import { PHONE_DISPLAY, TEL_HREF, WHATSAPP_URL } from "@/lib/contact";
+import { useViewer } from "@/lib/useViewer";
 
 const sectionLinks = [
   { label: "Сабақтар", href: "/#courses" },
@@ -14,7 +15,6 @@ const sectionLinks = [
 const pageLinks = [
   { label: "Бағдарлама", to: "/courses" },
   { label: "Кіріспе сабақ", to: "/kirispe-sabaq" },
-  { label: "Кабинет", to: "/dashboard" },
 ];
 
 const Navbar = () => {
@@ -22,6 +22,12 @@ const Navbar = () => {
   const [open, setOpen] = useState(false);
   const { pathname } = useLocation();
   const isHome = pathname === "/";
+  const { viewer } = useViewer();
+  const links = [
+    ...pageLinks,
+    ...(viewer?.isAdmin ? [{ label: "Админ", to: "/admin" }] : []),
+    viewer ? { label: "Кабинет", to: "/dashboard" } : { label: "Кіру", to: "/login" },
+  ];
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -44,19 +50,30 @@ const Navbar = () => {
       }`}
     >
       <div className="max-w-6xl mx-auto px-4 flex items-center justify-between h-16">
-        <Link to="/" className={`font-bold text-lg sm:text-xl ${solid ? "text-primary" : "text-primary-foreground"}`}>
+        <Link
+          to="/"
+          className={`font-bold text-lg sm:text-xl ${solid ? "text-primary" : "text-primary-foreground"}`}
+        >
           ☪ Әліппе
         </Link>
 
         <div className="hidden lg:flex items-center gap-5">
           {isHome &&
             sectionLinks.map((l) => (
-              <a key={l.href} href={l.href} className={`text-sm font-medium whitespace-nowrap transition-colors ${linkBase}`}>
+              <a
+                key={l.href}
+                href={l.href}
+                className={`text-sm font-medium whitespace-nowrap transition-colors ${linkBase}`}
+              >
                 {l.label}
               </a>
             ))}
-          {pageLinks.map((l) => (
-            <Link key={l.to} to={l.to} className={`text-sm font-medium whitespace-nowrap transition-colors ${linkBase}`}>
+          {links.map((l) => (
+            <Link
+              key={l.to}
+              to={l.to}
+              className={`text-sm font-medium whitespace-nowrap transition-colors ${linkBase}`}
+            >
               {l.label}
             </Link>
           ))}
@@ -76,11 +93,7 @@ const Navbar = () => {
           </a>
         </div>
 
-        <button
-          className="lg:hidden p-2"
-          onClick={() => setOpen(!open)}
-          aria-label="Toggle menu"
-        >
+        <button className="lg:hidden p-2" onClick={() => setOpen(!open)} aria-label="Toggle menu">
           {open ? (
             <X className={`w-6 h-6 ${solid ? "text-foreground" : "text-primary-foreground"}`} />
           ) : (
@@ -102,7 +115,7 @@ const Navbar = () => {
                 {l.label}
               </a>
             ))}
-          {pageLinks.map((l) => (
+          {links.map((l) => (
             <Link
               key={l.to}
               to={l.to}
